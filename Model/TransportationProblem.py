@@ -7,11 +7,13 @@ from Model.ReadFile import readFile
 class TransportationProblem:
     def __init__(self, filename:str):
         dictOfValues = readFile(filename)
+        
         self.name = dictOfValues["name"]
         self.index = dictOfValues["index"]
         self.customers = []
         self.suppliers = []
         self.links = []
+
         for i in dictOfValues["customers"]:
             customer = Customer(i["name"],i["orders"])
             self.customers.append(customer)
