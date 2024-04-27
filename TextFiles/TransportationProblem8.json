@@ -1,0 +1,43 @@
+{
+    "name": "Transportation Problem 7",
+    "index": 7,
+    "customers": [
+        {
+            "name": "C1",
+            "orders": 300
+        },
+        {
+            "name": "C2",
+            "orders": 500
+        }
+    ],
+    "suppliers": [
+        {
+            "name": "P1",
+            "provisions": 100
+        },
+        {
+            "name": "P2",
+            "provisions": 200
+        },
+        {
+            "name": "P3",
+            "provisions": 100
+        },
+        {
+            "name": "P4",
+            "provisions": 200
+        },
+        {
+            "name": "P5",
+            "provisions": 200
+        }
+    ],
+    "links": [
+        [50, 20],
+        [10, 50],
+        [55, 40],
+        [35, 45],
+        [12, 8]
+    ]
+}

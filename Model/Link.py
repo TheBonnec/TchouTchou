@@ -1,5 +1,5 @@
-from Supplier import Supplier
-from Customer import Customer
+from Model.Supplier import Supplier
+from Model.Customer import Customer
 
 
 class Link:
@@ -8,3 +8,6 @@ class Link:
         self.customer = customer
         self.cost = cost
         self.units = units
+
+    def print(self):
+        print("Delivery of "+str(self.units)+" units from "+self.supplier.name+" to customer "+self.customer.name+" with cost per units "+str(self.cost))

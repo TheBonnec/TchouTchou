@@ -1,6 +1,6 @@
 {
-    "name": "Transportation Problem 1",
-    "index": 1,
+    "name": "Transportation Problem 2",
+    "index": 2,
     "customers": [
         {
             "name": "C1",
@@ -22,7 +22,7 @@
         }
     ],
     "links": [
-        [30, 20],
-        [10, 50]
+        [10, 20],
+        [30, 10]
     ]
 }
