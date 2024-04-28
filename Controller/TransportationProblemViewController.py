@@ -8,30 +8,30 @@ class TransportationProblemViewController:
 
 
     def NordWestAlgorithm(transportationProblem: TransportationProblem):
-        tp_copy = copy.deepcopy(transportationProblem)
+        tpCopy = copy.deepcopy(transportationProblem)
         i, j = 0, 0
 
-        while i < len(tp_copy.suppliers) and j < len(tp_copy.customers):
+        while i < len(tpCopy.suppliers) and j < len(tpCopy.customers):
             # Calculate the minimum amount to allocate
-            amount = min(tp_copy.suppliers[i].provision, tp_copy.customers[j].order)
+            amount = min(tpCopy.suppliers[i].provision, tpCopy.customers[j].order)
             
             # Find the corresponding Link object and update its quantity
-            link = next((l for l in tp_copy.links if l.supplier == tp_copy.suppliers[i] and l.customer == tp_copy.customers[j]), None)
+            link = next((l for l in tpCopy.links if l.supplier == tpCopy.suppliers[i] and l.customer == tpCopy.customers[j]), None)
             if link:
                 link.units += amount  # Increment the quantity
 
             # Update the remaining supply and demand
-            tp_copy.suppliers[i].provision -= amount
-            tp_copy.customers[j].order -= amount
+            tpCopy.suppliers[i].provision -= amount
+            tpCopy.customers[j].order -= amount
 
             # Move to the next supplier or customer
-            if tp_copy.suppliers[i].provision == 0 and i < len(tp_copy.suppliers) - 1:
+            if tpCopy.suppliers[i].provision == 0 and i < len(tpCopy.suppliers) - 1:
                 i += 1
-            elif tp_copy.customers[j].order == 0 and j < len(tp_copy.customers) - 1:
+            elif tpCopy.customers[j].order == 0 and j < len(tpCopy.customers) - 1:
                 j += 1
-            elif tp_copy.suppliers[i].provision == 0:
+            elif tpCopy.suppliers[i].provision == 0:
                 break
-            elif tp_copy.customers[j].order == 0:
+            elif tpCopy.customers[j].order == 0:
                 break
 
-        return tp_copy
+        return tpCopy
