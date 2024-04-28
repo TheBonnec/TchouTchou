@@ -1,12 +1,25 @@
-from View.View import View
 from Model.TransportationProblem import TransportationProblem
 
-class MyView():
-    TP = TransportationProblem("TextFiles/TransportationProblem3.json")
-    TP.suppliers[1].print()
 
-    #def __init__(self):
-     #super().__init__()
+class MyView:
+    def __init__(self):
+        self.transportation_problem = None
 
+    def solve_transportation_problem(self, filename):
+        print(f"Loading Transportation Problem from {filename}")
+        self.transportation_problem = TransportationProblem(filename)
 
-MyView()
+        solved_tp = self.transportation_problem.NordWestAlgorithm()
+
+        for link in solved_tp.links:
+            if link.units > 0:
+                print(f"Allocated {link.units} units from {link.supplier.name} to {link.customer.name}")
+
+        if not any(link.units > 0 for link in solved_tp.links):
+            print("No allocations made. Please check the input data and algorithm logic.")
+
+if __name__ == "__main__":
+    filename = "TextFiles/TransportationProblem5.json"
+    view = MyView()
+    view.solve_transportation_problem(filename)
+
