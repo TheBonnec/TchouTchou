@@ -5,3 +5,7 @@ class Supplier:
 
     def print(self):
         print("Supplier "+self.name+" with provision "+str(self.provision))
+        
+    def __lt__(self, other):
+        # Assume that comparison is based on the 'provision' attribute
+        return self.provision < other.provision    
