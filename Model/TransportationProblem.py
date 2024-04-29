@@ -24,5 +24,22 @@ class TransportationProblem:
             for k in range(len(dict_of_values["links"][i])):
                 link = Link(self.suppliers[i], self.customers[k], dict_of_values["links"][i][k])
                 self.links.append(link)
+    
+
+
+    def getSupplierLinks(self, supplier: Supplier) -> list[Link]:
+        linksList: list[Link] = []
+        for link in self.links:
+            if link.supplier == supplier:
+                linksList.append(link)
+        return linksList
+    
+
+    def getCustomerLinks(self, customer: Customer) -> list[Link]:
+        linksList: list[Link] = []
+        for link in self.links:
+            if link.customer == customer:
+                linksList.append(link)
+        return linksList
                 
    
