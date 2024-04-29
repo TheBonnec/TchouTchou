@@ -33,7 +33,7 @@ view = MyView()
 view.solve_transportation_problem(filepath)'''
     
 
-    
+
 
 import json
 from Controller.TransportationProblemViewController import TransportationProblemViewController

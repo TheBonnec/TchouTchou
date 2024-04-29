@@ -53,6 +53,7 @@ class TransportationProblemViewController:
             if customer_links:
                 col_costs = sorted(link.cost for link in customer_links)
                 col_penalties[customer] = col_costs[1] - col_costs[0] if len(col_costs) > 1 else 0
+
             
         return row_penalties, col_penalties
 
@@ -63,7 +64,7 @@ class TransportationProblemViewController:
 
         while any(supplier.provision > 0 for supplier in tpCopy.suppliers) and any(customer.order > 0 for customer in tpCopy.customers):
             row_penalties, col_penalties = self.calculate_penalties(tpCopy.links)
-
+            
             max_row_penalty_supplier = max(row_penalties, key=row_penalties.get, default=None)
             max_col_penalty_customer = max(col_penalties, key=col_penalties.get, default=None)
 
@@ -73,6 +74,20 @@ class TransportationProblemViewController:
                 allocate_row = row_penalties[max_row_penalty_supplier] >= col_penalties[max_col_penalty_customer]
             elif max_col_penalty_customer is not None:
                 allocate_row = False
+            
+
+            '''
+            # Le code du dessus peut-être abrégé par :
+            max_row_penalty_supplier = max(row_penalties, key = row_penalties.get, default = 0)
+            max_col_penalty_customer = max(col_penalties, key = col_penalties.get, default = 0)
+
+            allocate_row = True
+
+            allocate_row = row_penalties[max_row_penalty_supplier] >= col_penalties[max_col_penalty_customer]
+            '''
+            
+
+            
 
             if allocate_row:
                 # Allocate to the link with the minimum cost in the row of the supplier with the max penalty
@@ -94,6 +109,9 @@ class TransportationProblemViewController:
                 break
 
             # Perform the allocation
+            print("\nTour")
+            print(f"{min_cost_link.customer.name} : {min_cost_link.customer.order}")
+            print(f"{min_cost_link.supplier.name} : {min_cost_link.supplier.provision}")
             allocation = min(min_cost_link.supplier.provision, min_cost_link.customer.order)
             if allocation > 0:
                 min_cost_link.units += allocation
