@@ -45,14 +45,10 @@ class MyView:
 
     def solve_transportation_problem(self, filename):
         print(f"Attempting to solve transportation problem from file: {filename}")
-        try:
-            tp = TransportationProblem(filename)
-            solved_tp_bh = self.controller.BalasHammerAlgo(tp)
-            print("Applied Balas-Hammer Algorithm.")
-            self.display_results(solved_tp_bh)
-
-        except Exception as e:
-            print(f"An error occurred: {e}")
+        tp = TransportationProblem(filename)
+        solved_tp_bh = self.controller.balasHammerAlgo(tp)
+        print("Applied Balas-Hammer Algorithm.")
+        self.display_results(solved_tp_bh)
 
     def display_results(self, solved_tp):
         allocations_exist = False
