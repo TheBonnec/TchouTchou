@@ -41,31 +41,5 @@ class TransportationProblem:
             if link.customer.name == customer.name:
                 linksList.append(link)
         return linksList
-    
-
-    def checkIfSupplierIsFull(self, supplier: Supplier) -> bool:
-        provisions: int = supplier.provision
-        supplierLinks: list[Link] = self.getSupplierLinks(supplier = supplier)
-        sum: int = 0
-
-        for link in supplierLinks:
-            sum += link.units
-        
-        if sum >= provisions:
-            return True
-        return False
-    
-
-    def checkIfCustomerIsFull(self, customer: Customer) -> bool:
-        orders: int = customer.order
-        customerLinks: list[Link] = self.getCustomerLinks(customer = customer)
-        sum: int = 0
-
-        for link in customerLinks:
-            sum += link.units
-        
-        if sum >= orders:
-            return True
-        return False
                 
    
