@@ -45,8 +45,6 @@ class TransportationProblemViewController:
 
 
     def calculatePenalties(self, transportationProblem: TransportationProblem):
-        nonAvailableLinks: list[Link] = self.getNonAvailableLinks(transportationProblem = transportationProblem)
-
         # Compute the penalties for each supplier
         for supplier in transportationProblem.suppliers:
             # Check if the supplier still has provisions
