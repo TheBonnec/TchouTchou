@@ -1,4 +1,4 @@
-'''import json
+import json
 from Controller.TransportationProblemViewController import TransportationProblemViewController
 from Model.TransportationProblem import TransportationProblem
 
@@ -26,7 +26,7 @@ class MyView:
 
 
 
-filepath = "TextFiles/TransportationProblem2.json"
+filepath = "TextFiles/TransportationProblem5.json"
 
 view = MyView()
-view.solve_transportation_problem(filepath)'''
+view.solve_transportation_problem(filepath)
