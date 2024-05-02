@@ -18,7 +18,7 @@ solution = tpcontroler.NordWestAlgorithm(tp)
 from View.View import View
 View().afficher_proposition_transport(tp, solution)
 
-from findCycle import isAcylique
+from Controller.verifyCycle import isAcylique
 print(isAcylique(solution))
 
 
