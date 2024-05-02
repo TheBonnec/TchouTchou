@@ -18,6 +18,10 @@ class Link:
             return self.key == other.key
         return False
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> 546dbeb (fin fonction isConnected, J'attends le verifyCycle)
 
 """
 class Link:
@@ -27,7 +31,11 @@ class Link:
         self.units = units  # Ensure this attribute is correctly named and used
 """      
 
+<<<<<<< HEAD
 =======
 >>>>>>> efdfb5b (ça marche)
+=======
+>>>>>>> 8554dc0 (fin fonction isConnected, J'attends le verifyCycle)
+>>>>>>> 546dbeb (fin fonction isConnected, J'attends le verifyCycle)
 
     
