@@ -1,12 +1,8 @@
-from View.View import View
+from Controller.SteppingStoneViewController import SteppingStoneViewController
 from Model.TransportationProblem import TransportationProblem
 
-class MyView():
-    TP = TransportationProblem("TextFiles/TransportationProblem3.json")
-    TP.suppliers[1].print()
-
-    #def __init__(self):
-     #super().__init__()
-
-
-MyView()
+# Create the problem instance from a JSON file
+tp = TransportationProblem("TextFiles/TransportationProblem5.json")
+controller = SteppingStoneViewController(tp)
+constraintValue = controller.calculateConstraint()
+print("Transportation Constraint:", constraintValue)
