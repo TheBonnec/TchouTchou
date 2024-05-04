@@ -1,5 +1,5 @@
 from Model.TransportationProblem import TransportationProblem
-from Model.IsConnected import isConnected
+from Controller.IsConnected import isConnected
 from Model.VerifyCycle import VerifyCycle
 from copy import *
 
