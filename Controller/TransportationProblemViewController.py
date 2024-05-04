@@ -12,7 +12,7 @@ class TransportationProblemViewController:
 
 
 
-    def NordWestAlgorithm(transportationProblem: TransportationProblem):
+    def NordWestAlgorithm(self, transportationProblem: TransportationProblem):
         tpCopy = copy.deepcopy(transportationProblem)
         i, j = 0, 0
 
@@ -38,7 +38,6 @@ class TransportationProblemViewController:
                 break
             elif tpCopy.customers[j].order == 0:
                 break
-
         return tpCopy
             
 
