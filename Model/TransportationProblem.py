@@ -15,6 +15,7 @@ class TransportationProblem:
         self.customers = []
         self.suppliers = []
         self.links = []
+    
 
         for i in dict_of_values["customers"]:
             customer = Customer(i["name"], i["orders"])
