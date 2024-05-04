@@ -29,3 +29,12 @@ class SteppingStoneViewController:
         print(f"Total provisions: {totalProvisions}, Total orders: {totalOrders}, Total shipped: {totalShipped}")
         return min(totalProvisions, totalOrders, totalShipped)
     
+        
+    def removeCycle(self, tp, cycleNodes):
+        removedLinks = []
+        # Collect all links that match the cycle nodes for removal
+        for link in tp.links[:]:  # creates a shallow copy of the list
+            if (link.supplier.name, link.customer.name) in cycleNodes:
+                removedLinks.append(link)
+                tp.links.remove(link)
+        return tp, removedLinks
