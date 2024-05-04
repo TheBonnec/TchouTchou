@@ -17,17 +17,4 @@ class Link:
         if type(other) == Link:
             return self.key == other.key
         return False
-<<<<<<< HEAD
-=======
-
-"""
-class Link:
-    def __init__(self, supplier, customer, units):
-        self.supplier = supplier
-        self.customer = customer
-        self.units = units  # Ensure this attribute is correctly named and used
-"""      
-
->>>>>>> mathilde
-
     
