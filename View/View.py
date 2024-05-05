@@ -25,7 +25,7 @@ class View:
             orders.append(transportationProblem.customers[j].order)
 
 
-        transportPrices = [[transportationProblem.links[i * nbColumns + j].units for j in range(nbColumns)] for i in range(nbRows)]
+        transportPrices = [[transportationProblem.links[i * nbColumns + j].cost for j in range(nbColumns)] for i in range(nbRows)]
 
 
         proposition_transport = [[0 for _ in range(nbColumns)] for _ in range(nbRows)]
