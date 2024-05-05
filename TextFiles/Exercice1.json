@@ -1,0 +1,41 @@
+{
+    "name": "Exercice 1",
+    "index": 9,
+    "customers": [
+        {
+            "name": "C1",
+            "orders": 50
+        },
+        {
+            "name": "C2",
+            "orders": 75
+        },
+        {
+            "name": "C3",
+            "orders": 30
+        },
+        {
+            "name": "C4",
+            "orders": 25
+        }
+    ],
+    "suppliers": [
+        {
+            "name": "S1",
+            "provisions": 60
+        },
+        {
+            "name": "S2",
+            "provisions": 30
+        },
+        {
+            "name": "S3",
+            "provisions": 90
+        }
+    ],
+    "links": [
+        [11, 12, 10, 10],
+        [17, 16, 15, 18],
+        [19, 21, 20, 22]
+    ]
+}

@@ -10,11 +10,12 @@ import copy
 class TransportationProblem:
     def __init__(self, filename:str):
         dict_of_values = readFile(filename)
-        self.name = dict_of_values["name"]
-        self.index = dict_of_values["index"]
-        self.customers = []
-        self.suppliers = []
-        self.links = []
+        
+        self.name: str = dict_of_values["name"]
+        self.index: int = dict_of_values["index"]
+        self.customers: list[Customer] = []
+        self.suppliers: list[Supplier] = []
+        self.links: list[Link] = []
         
 
         for i in dict_of_values["customers"]:

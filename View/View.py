@@ -1,64 +1,24 @@
-import os
+from Model.TransportationProblem import TransportationProblem
 from colorama import Fore, Style
+from tabulate import tabulate
+from Model.Link import Link
+import os
+
+
 
 class View:
     def __init__(self, displayViewAtInit: bool = True):
+        self.isViewRunning = True
         if displayViewAtInit:
             self.displayView()
-
-    
-    
-    def displayTransportProposition(self, transportationProblem, transportProposition):
-        COLOR_HEADER = Fore.BLACK
-        COLOR_PROVISIONS = Fore.RED
-        COLOR_COUTS = Fore.GREEN
-        LENGTH = 15
-
-        nbRows = len(transportationProblem.suppliers)
-        nbColumns = len(transportationProblem.customers)
-
-        provisions =[]
-        orders = []
-        for i in range(nbRows):
-            provisions.append(transportationProblem.suppliers[i].provision)
-        for j in range(nbColumns):
-            orders.append(transportationProblem.customers[j].order)
-
-
-        transportPrices = [[transportationProblem.links[i * nbColumns + j].units for j in range(nbColumns)] for i in range(nbRows)]
-
-
-        proposition_transport = [[0 for _ in range(nbColumns)] for _ in range(nbRows)]
-        for i in range(nbRows):
-            for j in range(nbColumns):
-                proposition_transport[i][j] = transportProposition.links[i * nbColumns + j].units
-
-        
-        print("\nTransportation proposition :")
-        print(" " * LENGTH, end="")
-        for column in range(nbColumns):
-            print(COLOR_HEADER + f"C{column + 1}" + " " * (LENGTH - len(str(column + 1)) - 2), end="")
-        print(COLOR_HEADER + f"Provision Pi" + " " * (LENGTH - len("Provision Pi") - 1), end="")
-        print(Style.RESET_ALL)
-        for row in range(nbRows):
-            print(COLOR_HEADER + f"P{row + 1}" + " " * (LENGTH - len(str(row + 1)) - 1), end="")
-            for column in range(nbColumns):
-                print(COLOR_PROVISIONS + f"{proposition_transport[row][column]}", end=" ")
-                print(COLOR_COUTS + "(" + str(transportPrices[row][column]) + ")"+ " " * (LENGTH - len(str(proposition_transport[row][column])) - len(str(transportPrices[row][column])) - 4), end="")
-            print(COLOR_PROVISIONS + f"{provisions[row]}" + " " * (LENGTH - len(str(provisions[row])) - 1), end="")
-            print(Style.RESET_ALL)
-        print(COLOR_HEADER + "orders Cj" + " " * (LENGTH - len("orders Cj")), end="")
-        for column in range(nbColumns):
-            print(COLOR_PROVISIONS + f"{orders[column]}" + " " * (LENGTH - len(str(orders[column])) - 1),end="")
-        print(Style.RESET_ALL)
-
 
 
 
     def displayView(self):
-        self._clearConsole()
-        self._title()
-        self.body()
+        while self.isViewRunning:
+            self._clearConsole()
+            self._title()
+            self.body()
     
     
     def body(self):
@@ -81,3 +41,51 @@ Operations Research Project
 
     """
         print(content)
+
+
+    
+
+    ''' ----- Tools ----- '''
+
+    def displayTransportationProblemMatrix(self, transportationProblem: TransportationProblem):
+        COLOR_BLACK = Fore.BLACK
+        COLOR_PROVISIONS = Fore.RED
+        COLOR_COSTS = Fore.GREEN
+        COLOR_TOTAL = Fore.YELLOW
+
+        headers: list[str] = [""]
+        rows: list[list[str]] = []
+        bottomRow: list[str] = ["Orders"]
+        totalOrders: int = 0
+
+        # Building the header with the list of customers, as well as the orders row
+        for customer in transportationProblem.customers:
+            headers.append(customer.name)
+            bottomRow.append(f"{COLOR_BLACK}{customer.order}{Style.RESET_ALL}")
+            totalOrders += customer.order
+        headers.append("Provision")
+        bottomRow.append(f"{COLOR_TOTAL}{totalOrders}{Style.RESET_ALL}")
+
+        # Building the rows from the list of suppliers
+        for supplier in transportationProblem.suppliers:
+            suppliersLink: list[Link] = transportationProblem.getSupplierLinks(supplier = supplier)
+            suppliersLink.sort(key = lambda x: x.customer.name, reverse = False)
+            row: list[str] = [supplier.name]
+
+            # Adding each cell to the row
+            for link in suppliersLink:
+                cell: str = f"{COLOR_PROVISIONS}{link.units} {COLOR_COSTS}({link.cost}){Style.RESET_ALL}"
+                row.append(cell)
+
+            # Adding the provisions
+            row.append(f"{COLOR_BLACK}{supplier.provision}{Style.RESET_ALL}")
+
+            rows.append(row)
+
+        # Adding the last row (the orders placed by the customer)
+        rows.append(bottomRow)
+
+
+        # Displaying the matrix
+        matrix = tabulate(rows, headers = headers, tablefmt = "mixed_grid")
+        print(matrix)

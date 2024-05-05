@@ -1,11 +1,9 @@
-from Model.TransportationProblem import TransportationProblem
+from View.MainView import MainView
 
 
-class MyView():
-    TP = TransportationProblem("TextFiles/TransportationProblem3.json")
-
-    #def __init__(self):
-     #super().__init__()
+def main():
+    MainView()
 
 
-MyView()
+if __name__ == "__main__":
+    main()

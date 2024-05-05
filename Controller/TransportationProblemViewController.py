@@ -10,9 +10,11 @@ class TransportationProblemViewController:
         pass
 
 
+    
+    
+    ''' ----- North West ----- '''
 
-
-    def NordWestAlgorithm(self, transportationProblem: TransportationProblem):
+    def northWestAlgorithm(self, transportationProblem: TransportationProblem):
         tpCopy = copy.deepcopy(transportationProblem)
         i, j = 0, 0
 
@@ -38,8 +40,62 @@ class TransportationProblemViewController:
                 break
             elif tpCopy.customers[j].order == 0:
                 break
+        
+        self.getOrdersBack(originalTP = transportationProblem, transformedTP = tpCopy)
+
         return tpCopy
             
+
+
+
+
+    ''' ----- Balas Hammer ----- '''
+
+    def balasHammerAlgo(self, transportationProblem: TransportationProblem):
+        tpCopy: TransportationProblem = copy.deepcopy(transportationProblem)
+
+        while any(supplier.provision > 0 for supplier in tpCopy.suppliers) and any(customer.order > 0 for customer in tpCopy.customers):
+            self.calculatePenalties(transportationProblem = tpCopy)
+
+            # Get the maximum penalty for each supplier and each customer
+            supplierWithMaxPenalty: Supplier = max(tpCopy.suppliers, key = lambda supplier: supplier.penalty, default = None)
+            customerWithMaxPenalty: Customer = max(tpCopy.customers, key = lambda customer: customer.penalty , default = None)
+
+            # Determine whether to allocate based on supplier or customer by comparing penalties
+            doWeAllocateToSupplier: bool = supplierWithMaxPenalty.penalty >= customerWithMaxPenalty.penalty
+
+
+            if doWeAllocateToSupplier:
+                suppliersLinks: list[Link] = tpCopy.getSupplierLinks(supplier = supplierWithMaxPenalty)
+                availableLinks: list[Link] = self.checkLinksAreAvailable(transportationProblem = tpCopy, links = suppliersLinks)
+            else:
+                customerLinks: list[Link] = tpCopy.getCustomerLinks(customer = customerWithMaxPenalty)
+                availableLinks: list[Link] = self.checkLinksAreAvailable(transportationProblem = tpCopy, links = customerLinks)
+            
+            linkWithMinimumCost: Link = min(availableLinks, key = lambda link: link.cost, default = None)
+
+            print(f"\nSelected Link : {linkWithMinimumCost.key}")
+
+            if linkWithMinimumCost == None:
+                break
+
+
+            valueToAllocate = min(linkWithMinimumCost.supplier.provision, linkWithMinimumCost.customer.order)
+            print(valueToAllocate)
+            if valueToAllocate:
+                linkWithMinimumCost.units += valueToAllocate
+                linkWithMinimumCost.supplier.provision -= valueToAllocate
+                linkWithMinimumCost.customer.order -= valueToAllocate
+            else:
+                break
+
+            print("\n--------\n")
+        
+        self.getOrdersBack(originalTP = transportationProblem, transformedTP = tpCopy)
+        
+        return tpCopy
+    
+
 
 
 
@@ -68,47 +124,68 @@ class TransportationProblemViewController:
 
             else:
                 customer.penalty = -1
-
-
-    
-
-    def balasHammerAlgo(self, transportationProblem: TransportationProblem):
-        tpCopy: TransportationProblem = copy.deepcopy(transportationProblem)
-
-        while any(supplier.provision > 0 for supplier in tpCopy.suppliers) and any(customer.order > 0 for customer in tpCopy.customers):
-            self.calculatePenalties(transportationProblem = tpCopy)
-
-            # Get the maximum penalty for each supplier and each customer
-            supplierWithMaxPenalty: Supplier = max(tpCopy.suppliers, key = lambda supplier: supplier.penalty, default = None)
-            customerWithMaxPenalty: Customer = max(tpCopy.customers, key = lambda customer: customer.penalty , default = None)
-
-            # Determine whether to allocate based on supplier or customer by comparing penalties
-            doWeAllocateToSupplier: bool = supplierWithMaxPenalty.penalty >= customerWithMaxPenalty.penalty
-
-
-            if doWeAllocateToSupplier:
-                suppliersLinks: list[Link] = tpCopy.getSupplierLinks(supplier = supplierWithMaxPenalty)
-                availableLinks: list[Link] = self.checkLinksAreAvailable(transportationProblem = tpCopy, links = suppliersLinks)
-            else:
-                customerLinks: list[Link] = tpCopy.getCustomerLinks(customer = customerWithMaxPenalty)
-                availableLinks: list[Link] = self.checkLinksAreAvailable(transportationProblem = tpCopy, links = customerLinks)
-            
-            linkWithMinimumCost: Link = min(availableLinks, key = lambda link: link.cost, default = None)
-
-            if linkWithMinimumCost == None:
-                break
-
-
-            valueToAllocate = min(linkWithMinimumCost.supplier.provision, linkWithMinimumCost.customer.order)
-            if valueToAllocate:
-                linkWithMinimumCost.units += valueToAllocate
-                linkWithMinimumCost.supplier.provision -= valueToAllocate
-                linkWithMinimumCost.customer.order -= valueToAllocate
-            else:
-                break
         
-        return tpCopy
+        # Display Penalties
+        print("\nCustomer penalties")
+        for customer in transportationProblem.customers:
+            print(f"{customer.name} : {customer.penalty}")
+        
+        print("\nSupplier penalties")
+        for supplier in transportationProblem.suppliers:
+            print(f"{supplier.name} : {supplier.penalty}")
+
+
+    '''
+    def bestCustomerToFill(self, transportationProblem: TransportationProblem) -> Customer:
+        customers: list[Customer] = transportationProblem.customers
+        customers.sort(key = lambda x: x.penalty, reverse = False)
+
+        customersWithMaxPenaly: list[Customer] = []
+
+        customerWithMaxPenaly: Customer = customers[0]
+        for customer in customers:
+            if customer.penalty == customerWithMaxPenaly.penalty:
+                customersWithMaxPenaly.append(customer)
+
+        if len(customersWithMaxPenaly) > 1:
+            lowestCostLink: Link = None
+            for customer in customersWithMaxPenaly:
+                for link in transportationProblem.getCustomerLinks(customer = customer):
+                    if lowestCostLink != None:
+                        if link.cost < lowestCostLink.cost:
+                            lowestCostLink = link
+                    else:
+                        lowestCostLink = link
+            return lowestCostLink.customer
+        else:
+            return customersWithMaxPenaly[0]
+        
+
     
+    def bestSupplierToFill(self, transportationProblem: TransportationProblem) -> Supplier:
+        suppliers: list[Supplier] = transportationProblem.suppliers
+        suppliers.sort(key = lambda x: x.penalty, reverse = False)
+
+        suppliersWithMaxPenaly: list[Supplier] = []
+
+        supplierWithMaxPenaly: Supplier = suppliers[0]
+        for supplier in suppliers:
+            if supplier.penalty == supplierWithMaxPenaly.penalty:
+                suppliersWithMaxPenaly.append(supplier)
+
+        if len(suppliersWithMaxPenaly) > 1:
+            lowestCostLink: Link = None
+            for supplier in suppliersWithMaxPenaly:
+                for link in transportationProblem.getSupplierLinks(supplier = supplier):
+                    if lowestCostLink != None:
+                        if link.cost < lowestCostLink.cost:
+                            lowestCostLink = link
+                    else:
+                        lowestCostLink = link
+            return lowestCostLink.supplier
+        else:
+            return suppliersWithMaxPenaly[0]
+    '''
 
 
     # Returns the list of all available links in the input list
@@ -135,4 +212,16 @@ class TransportationProblemViewController:
                 nonAvailableLinks.append(link)
         
         return nonAvailableLinks
+    
+
+    # Puts the orders and provisions back in the transformed TP after execution
+    def getOrdersBack(self, originalTP: TransportationProblem, transformedTP: TransportationProblem):
+        for originalCustomer in originalTP.customers:
+            for transformedCustomer in transformedTP.customers:
+                if originalCustomer.name == transformedCustomer.name:
+                    transformedCustomer.order = originalCustomer.order
+        for originalSupplier in originalTP.suppliers:
+            for transformedSupplier in transformedTP.suppliers:
+                if originalSupplier.name == transformedSupplier.name:
+                    transformedSupplier.provision = originalSupplier.provision
 
