@@ -1,0 +1,53 @@
+{
+    "name": "Transportation Problem 10",
+    "index": 10,
+    "customers": [
+        {
+            "name": "C1",
+            "orders": 500
+        },
+        {
+            "name": "C2",
+            "orders": 500
+        },
+        {
+            "name": "C3",
+            "orders": 500
+        },
+        {
+            "name": "C4",
+            "orders": 500
+        },
+        {
+            "name": "C5",
+            "orders": 500
+        },
+        {
+            "name": "C6",
+            "orders": 500
+        },
+        {
+            "name": "C7",
+            "orders": 500
+        }
+    ],
+    "suppliers": [
+        {
+            "name": "P1",
+            "provisions": 500
+        },
+        {
+            "name": "P2",
+            "provisions": 500
+        },
+        {
+            "name": "P3",
+            "provisions": 2500
+        }
+    ],
+    "links": [
+        [300, 20, 15, 16, 17, 18, 20],
+        [1, 50, 24, 30, 22, 27, 19],
+        [50, 40, 30, 3, 25, 26, 13]
+    ]
+}

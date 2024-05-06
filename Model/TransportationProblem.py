@@ -3,6 +3,7 @@ from Model.Customer import Customer
 from Model.Link import Link
 from Model.Supplier import Supplier
 from Model.ReadFile import readFile
+from Model.CostLink import CostLink
 import copy
 
 
@@ -10,7 +11,7 @@ import copy
 class TransportationProblem:
     def __init__(self, filename:str):
         dict_of_values = readFile(filename)
-        
+
         self.name: str = dict_of_values["name"]
         self.index: int = dict_of_values["index"]
         self.customers: list[Customer] = []
@@ -57,3 +58,11 @@ class TransportationProblem:
             if link.customer.name == customer.name:
                 linksList.append(link)
         return linksList
+
+
+    def getCostsLinks(self) -> list[CostLink]:
+        costsLink: list[CostLink] = []
+        for link in self.links:
+            newCostLink = CostLink(link.supplier, link.customer, link.cost)
+            costsLink.append(newCostLink)
+        return costsLink

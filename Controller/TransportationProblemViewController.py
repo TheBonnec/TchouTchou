@@ -11,6 +11,9 @@ class TransportationProblemViewController:
 
 
     
+    def calculateTotalCost(self, tp: TransportationProblem):
+        return sum(link.cost * link.units for link in tp.links)
+
     
     ''' ----- North West ----- '''
 
@@ -74,8 +77,6 @@ class TransportationProblemViewController:
             
             linkWithMinimumCost: Link = min(availableLinks, key = lambda link: link.cost, default = None)
 
-            print(f"\nSelected Link : {linkWithMinimumCost.key}")
-
             if linkWithMinimumCost == None:
                 break
 
@@ -88,8 +89,6 @@ class TransportationProblemViewController:
                 linkWithMinimumCost.customer.order -= valueToAllocate
             else:
                 break
-
-            print("\n--------\n")
         
         self.getOrdersBack(originalTP = transportationProblem, transformedTP = tpCopy)
         
@@ -134,58 +133,6 @@ class TransportationProblemViewController:
         for supplier in transportationProblem.suppliers:
             print(f"{supplier.name} : {supplier.penalty}")
 
-
-    '''
-    def bestCustomerToFill(self, transportationProblem: TransportationProblem) -> Customer:
-        customers: list[Customer] = transportationProblem.customers
-        customers.sort(key = lambda x: x.penalty, reverse = False)
-
-        customersWithMaxPenaly: list[Customer] = []
-
-        customerWithMaxPenaly: Customer = customers[0]
-        for customer in customers:
-            if customer.penalty == customerWithMaxPenaly.penalty:
-                customersWithMaxPenaly.append(customer)
-
-        if len(customersWithMaxPenaly) > 1:
-            lowestCostLink: Link = None
-            for customer in customersWithMaxPenaly:
-                for link in transportationProblem.getCustomerLinks(customer = customer):
-                    if lowestCostLink != None:
-                        if link.cost < lowestCostLink.cost:
-                            lowestCostLink = link
-                    else:
-                        lowestCostLink = link
-            return lowestCostLink.customer
-        else:
-            return customersWithMaxPenaly[0]
-        
-
-    
-    def bestSupplierToFill(self, transportationProblem: TransportationProblem) -> Supplier:
-        suppliers: list[Supplier] = transportationProblem.suppliers
-        suppliers.sort(key = lambda x: x.penalty, reverse = False)
-
-        suppliersWithMaxPenaly: list[Supplier] = []
-
-        supplierWithMaxPenaly: Supplier = suppliers[0]
-        for supplier in suppliers:
-            if supplier.penalty == supplierWithMaxPenaly.penalty:
-                suppliersWithMaxPenaly.append(supplier)
-
-        if len(suppliersWithMaxPenaly) > 1:
-            lowestCostLink: Link = None
-            for supplier in suppliersWithMaxPenaly:
-                for link in transportationProblem.getSupplierLinks(supplier = supplier):
-                    if lowestCostLink != None:
-                        if link.cost < lowestCostLink.cost:
-                            lowestCostLink = link
-                    else:
-                        lowestCostLink = link
-            return lowestCostLink.supplier
-        else:
-            return suppliersWithMaxPenaly[0]
-    '''
 
 
     # Returns the list of all available links in the input list
