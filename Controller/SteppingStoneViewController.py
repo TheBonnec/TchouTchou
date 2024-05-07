@@ -111,11 +111,46 @@ class SteppingStoneViewController:
         link.units = maxUnits
         tp.links[tp.links.index(link)] = link
 
+
+
+        
+
+
+
+
+
+
+def stepping_stone(self, cycle: list['Edge']) -> int:
+        delta_cost = [self.costs[edge] * (-1)**i for i, edge in enumerate(cycle)]
+        delta_cost = sum(delta_cost)
+        if delta_cost > 0:
+            delta = -min([self.transportation_table[edge] for edge in cycle if cycle.index(edge) % 2 == 0])
+        elif delta_cost < 0:
+            delta = min([self.transportation_table[edge] for edge in cycle if cycle.index(edge) % 2 == 1])
+        else:
+            raise ValueError("The cost didn't change")
+        if delta == 0:
+            for i, edge in enumerate(cycle):
+                if self.transportation_table[edge] == 0:
+                    self.graph.remove_edge(*translate(edge))
+            return 0
+        for i, edge in enumerate(cycle):
+            if i % 2 == 0:
+                self.transportation_table[edge] += delta
+            else:
+                self.transportation_table[edge] -= delta
+            # ? remove the edge if the value is 0
+            if self.transportation_table[edge] == 0:
+                self.graph.remove_edge(*translate(edge))
+        return delta
+
         # modifier les autres liens si besoin pour respecter les contraintes
+
         # TODO : modifier les autres liens si besoin
 
-                
+    
         return tp
+
 
 
     def calculatePotentialCosts(self, tp: TransportationProblem, ts: TransportationProblem):

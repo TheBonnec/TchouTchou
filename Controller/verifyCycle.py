@@ -1,3 +1,5 @@
+from Model.TransportationProblem import TransportationProblem
+
 def createGraph(proposition_transport):
         nbRows = len(proposition_transport)
         nbColumns = len(proposition_transport[0])
@@ -30,11 +32,9 @@ def isGraphAcylic(transportProposition):
         graph = createGraph(proposition_transport)
         
         # on construit la matrice d'adjacence (ici symétrique car le graphe est non orienté)
-        adjMatrix = [[0 for _ in range(nbRows + nbColumns)] for _ in range(nbRows + nbColumns)]
-        for i in range(nbRows):
-            for j in graph[i]:
-                adjMatrix[i][j] = 1
-                adjMatrix[j][i] = 1
+        adjMatrix = computeAdjacencyMatrix(transportProposition, graph)
+
+        
         # On prends tous les sommets. Pour chaque sommet, on fait un parcours en largeur pour tenter de retomber sur le sommet de départ
         for s in graph:
             result = detectCycle(adjMatrix, s)
@@ -88,3 +88,17 @@ def detectCycle(adjMatrix, u):
                     cycle.append(i)
                 return cycle
     return False
+
+
+
+def computeAdjacencyMatrix(self, transportationProblem: TransportationProblem, graph) -> list[list[int]]:
+    nbRows = len(transportationProblem.suppliers)
+    nbColumns = len(transportationProblem.customers)
+
+    adjMatrix = [[0 for _ in range(nbRows + nbColumns)] for _ in range(nbRows + nbColumns)]
+    for i in range(nbRows):
+        for j in graph[i]:
+            adjMatrix[i][j] = 1
+            adjMatrix[j][i] = 1
+    
+    return adjMatrix
